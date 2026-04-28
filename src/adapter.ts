@@ -28,7 +28,7 @@ export const adapter = (orm: MikroORM, config: MikroOrmAdapterConfig = {}) => {
   let options: BetterAuthOptions | null = null;
   const createAdapter = (em: MikroORM["em"]): AdapterFactoryCustomizeAdapterCreator => () => {
     return {
-      create: async ({ data, model, select }) => {
+      create: async ({ data, model }) => {
         const entity = getEntityByModel(orm, model);
         const instance = em.create(entity, data as EntityDTO<typeof entity>);
         await em.flush();
@@ -49,17 +49,17 @@ export const adapter = (orm: MikroORM, config: MikroOrmAdapterConfig = {}) => {
         return instances;
       },
 
-      findOne: async <T>({ model, where, select, join }: Parameters<DBAdapter["findOne"]>[0]) => {
+      findOne: async <T>({ model, where, select }: Parameters<DBAdapter["findOne"]>[0]) => {
         const entity = getEntityByModel(orm, model);
         const transformedWhereQuery = transformWhere(where);
 
         const result =
           (await em.findOne(entity, transformedWhereQuery, { fields: select }));
           if (!result) return null;
-        return serialize(result, { forceObject: false });
+        return serialize(result, { forceObject: false }) as FindOneReturn<T>;
       },
       findMany: async <T>(
-        { model, where, limit, select, sortBy, offset, join }: Parameters<DBAdapter["findMany"]>[0],
+        { model, where, limit, select, sortBy, offset }: Parameters<DBAdapter["findMany"]>[0],
       ) => {
         const entity = getEntityByModel(orm, model);
         const transformedWhereQuery = where ? transformWhere(where) : {};
