@@ -32,6 +32,9 @@
   ],
   "homepage": "https://github.com/author/library#readme",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
