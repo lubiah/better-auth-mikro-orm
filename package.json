@@ -1,11 +1,11 @@
 {
   "name": "@lubiah/better-auth-mikro-orm",
   "version": "0.0.1",
-  "author": "Author Name <author.name@mail.com>",
+  "author": "Biah Lucretius",
   "private": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/author/library.git"
+    "url": "git+https://github.com/lubiah/better-auth-mikro-orm.git"
   },
   "devDependencies": {
     "@better-auth/test-utils": "^1.6.5",
@@ -24,13 +24,13 @@
     "./package.json": "./package.json"
   },
   "bugs": {
-    "url": "https://github.com/author/library/issues"
+    "url": "https://github.com/lubiah/better-auth-mikro-orm/issues"
   },
-  "description": "A starter for creating a TypeScript package.",
+  "description": "A Mikro-ORM adapter for Better Auth, a flexible authentication library for Node.js.",
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/author/library#readme",
+  "homepage": "https://github.com/lubiah/better-auth-mikro-orm#readme",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
