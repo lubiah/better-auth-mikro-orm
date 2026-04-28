@@ -2,6 +2,7 @@
   "name": "@lubiah/better-auth-mikro-orm",
   "version": "0.0.1",
   "author": "Author Name <author.name@mail.com>",
+  "private": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/author/library.git"
