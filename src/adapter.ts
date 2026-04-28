@@ -54,8 +54,9 @@ export const adapter = (orm: MikroORM, config: MikroOrmAdapterConfig = {}) => {
         const transformedWhereQuery = transformWhere(where);
 
         const result =
-          (await em.findOne(entity, transformedWhereQuery, { fields: select })) as unknown as FindOneReturn<T>;
-        return serialize(result, { forceObject: false }) as FindOneReturn<T>;
+          (await em.findOne(entity, transformedWhereQuery, { fields: select }));
+          if (!result) return null;
+        return serialize(result, { forceObject: false });
       },
       findMany: async <T>(
         { model, where, limit, select, sortBy, offset, join }: Parameters<DBAdapter["findMany"]>[0],
