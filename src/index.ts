@@ -1,3 +1,3 @@
-export function fn() {
-  return 'Hello, tsdown!'
-}
+import { adapter } from "./adapter";
+
+export { adapter};
