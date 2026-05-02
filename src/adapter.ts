@@ -136,7 +136,9 @@ export const adapter = (orm: MikroORM, config: MikroOrmAdapterConfig = {}) => {
           return callback(adapter(options!));
         }),
     },
-    adapter: createAdapter(orm.em.fork({ keepTransactionContext: true })),
+    adapter: createAdapter(
+      orm.em.fork({ keepTransactionContext: true, useContext: true }),
+    ),
   };
 
   const factory = createAdapterFactory(adapterOptions);
