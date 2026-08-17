@@ -81,6 +81,18 @@ describe("adapter findOne function", () => {
 
     expect(result).toBe(null);
   });
+
+  it("findOne with an OR connector finds a matching record", async () => {
+    await adapter.create({ model: "user", data: { name: "Ada", email: "ada@example.com" } });
+    const result = await adapter.findOne({
+      model: "user",
+      where: [
+        { field: "email", value: "ada@example.com", connector: "OR" },
+        { field: "email", value: "missing@example.com", connector: "OR" },
+      ],
+    });
+    expect(result).toMatchObject({ name: "Ada", email: "ada@example.com" });
+  });
 });
 
 describe("adapter update function", () => {
@@ -439,6 +451,17 @@ describe("adapter count function", () => {
     expect(countEq).toBe(1);
     expect(countNe).toBe(3);
     expect(countEq + countNe).toBe(4);
+  });
+
+  it("count with an in operator counts matching records", async () => {
+    for (const email of ["a@example.com", "b@example.com", "c@example.com"]) {
+      await adapter.create({ model: "user", data: { name: email, email } });
+    }
+    const count = await adapter.count({
+      model: "user",
+      where: [{ field: "email", value: ["a@example.com", "c@example.com"], operator: "in" }],
+    });
+    expect(count).toBe(2);
   });
 });
 

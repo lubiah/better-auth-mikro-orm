@@ -11,42 +11,51 @@ export const getEntityByModel = (orm: MikroORM, model: string) => {
   return entity.class;
 };
 
-export const transformWhere = (where: Where[]) => {
-  const createCondition = (operator: string, field: string, value: Where["value"]) => {
-    const condition: Record<string, Where["value"]> = {};
-    condition[operator] = value;
-    const fieldCondition: Record<string, unknown> = {};
-    fieldCondition[field] = condition;
-    return fieldCondition;
-  };
+export const transformWhere = (where?: Where[]) => {
+  if (!where || where.length === 0) return {};
 
-  if (!where) return {};
-  const obj: { $and: Record<string, unknown>[]; $or: Record<string, unknown>[] } = {
-    $and: [],
-    $or: [],
-  };
-  where.forEach(({ connector, operator, field, value }) => {
-    if (connector === "AND") {
-      switch (operator) {
-        case "eq":
-        case "ne":
-        case "gt":
-        case "gte":
-        case "lt":
-        case undefined:
-        case "lte": {
-          operator = operator === undefined ? "eq" : operator;
-    const condition = createCondition(`$${operator}`, field, value);
-          obj.$and.push(condition);
-          break;
-        }
-        case "starts_with":
-            const condition = createCondition("$like",field, `${value}%`);
-            obj.$and.push(condition);
-            break;
-      }
-    }
+  const condition = (field: string, operator: string, value: Where["value"]) => ({
+    [field]: { [operator === "eq" ? "$eq" : `$${operator}`]: value },
   });
 
-  return obj;
+  const and: Record<string, unknown>[] = [];
+  const or: Record<string, unknown>[] = [];
+
+  for (const { connector, operator, field, value } of where) {
+    const target = connector === "OR" ? or : and;
+    switch (operator) {
+      case "in":
+        target.push({ [field]: { $in: value } });
+        break;
+      case "not_in":
+        target.push({ [field]: { $nin: value } });
+        break;
+      case "contains":
+        target.push({ [field]: { $like: `%${value}%` } });
+        break;
+      case "starts_with":
+        target.push({ [field]: { $like: `${value}%` } });
+        break;
+      case "ends_with":
+        target.push({ [field]: { $like: `%${value}` } });
+        break;
+      case "gt":
+      case "gte":
+      case "lt":
+      case "lte":
+      case "ne":
+      case "eq":
+      case undefined:
+        target.push(condition(field, operator ?? "eq", value));
+        break;
+      default:
+        // Unknown operator — pass raw equality through rather than dropping.
+        target.push({ [field]: { $eq: value } });
+    }
+  }
+
+  const result: Record<string, unknown> = {};
+  if (and.length > 0) result.$and = and;
+  if (or.length > 0) result.$or = or;
+  return result;
 };
