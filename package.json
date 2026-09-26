@@ -1,6 +1,6 @@
 {
   "name": "@lubiah/better-auth-mikro-orm",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "Biah Lucretius",
   "private": false,
   "repository": {
@@ -8,18 +8,18 @@
     "url": "git+https://github.com/lubiah/better-auth-mikro-orm.git"
   },
   "devDependencies": {
-    "@better-auth/test-utils": "^1.6.29",
+    "@better-auth/test-utils": "^1.7.6",
     "@faker-js/faker": "^10.6.0",
-    "@mikro-orm/sqlite": "^7.1.12",
-    "@types/node": "^26.2.0",
+    "@mikro-orm/sqlite": "^7.2.1",
+    "@types/node": "^26.6.3",
     "@typescript/native-preview": "7.0.0-dev.20260707.2",
-    "@vitest/ui": "^4.1.10",
-    "bumpp": "^12.2.1",
-    "oxfmt": "^0.63.0",
-    "oxlint": "^1.78.0",
-    "tsdown": "^0.22.14",
+    "@vitest/ui": "^5.0.2",
+    "bumpp": "^12.3.0",
+    "oxfmt": "^0.70.0",
+    "oxlint": "^1.85.0",
+    "tsdown": "^0.23.0",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.2"
   },
   "exports": {
     ".": "./dist/index.mjs",
@@ -46,7 +46,7 @@
   },
   "type": "module",
   "peerDependencies": {
-    "@mikro-orm/core": "^7.1.12",
-    "better-auth": "^1.6.29"
+    "@mikro-orm/core": "^7.2.1",
+    "better-auth": "^1.7.6"
   }
 }
